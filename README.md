@@ -1,5 +1,5 @@
 # daaprox
-aaprox (https://github.com/jldevelops/approx) deployer
+aaprox (https://github.com/jldevelops/aaprox) deployer
 
 Change constants with `default_fee`,`fee_thresold`,`low_fee`
 
