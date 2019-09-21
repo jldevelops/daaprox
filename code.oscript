@@ -1,9 +1,10 @@
 {
 	init: `{
 		if(trigger.output[[asset=base]] < 6000) bounce('Not enough funds for fees');
-		$def_fee = trigger.data.default_fee and trigger.data.default_fee >= 0 ? round(trigger.data.default_fee) : 1000;
-		$fee_thr = trigger.data.fee_thresold and trigger.data.fee_thresold >= 0 ? round(trigger.data.fee_thresold) : 10000;
-		$low_fee = trigger.data.low_fee and trigger.data.low_fee <= 0 ? round(trigger.data.low_fee) : -600;
+		$def_fee = trigger.data.default_fee and trigger.data.default_fee > 0 ? round(trigger.data.default_fee) : 1000;
+		$fee_thr = trigger.data.fee_thresold and trigger.data.fee_thresold >= 3000 ? round(trigger.data.fee_thresold) : 10000;
+		$low_fee = trigger.data.low_fee and trigger.data.low_fee < 0 ? round(trigger.data.low_fee) : -600;
+		$attestor = trigger.data.attestor and is_valid_address(trigger.data.attestor) ? trigger.data.attestor : false;
 		if(trigger.output[[asset!=base]].asset != 'none')
 			$asset = trigger.output[[asset!=base]].asset;
 		else
@@ -41,6 +42,8 @@
 ||		"$DEFAULT_FEE = "||$def_fee||";"
 ||		"$FEE_THRESHOLD = "||$fee_thr||";"
 ||		"$LOW_FEE = "||$low_fee||";"
+||		($attestor?("$ATTESTOR_ADDR = '"||$attestor||"';"
+||		"if(!attestation[[attestors=$ATTESTOR_ADDR, address=trigger.address]]) bounce('Not allowed to use, please attest your address with '||$ATTESTOR_ADDR);"):"")
 ||		"if(trigger.data.to AND !is_valid_address(trigger.data.to)) bounce('To param invalid');"
 ||		"if(trigger.data.from AND !is_valid_address(trigger.data.from)) bounce('From param invalid');"
 ||		"if(trigger.data.spender AND !is_valid_address(trigger.data.spender)) bounce('Spender param invalid');"
@@ -51,7 +54,7 @@
 ||				"$change_fee = $LOW_FEE;"
 ||			"if(var['fee'] < 0 AND $bal < 2000)"
 ||				"$change_fee = $DEFAULT_FEE;"
-||			"if(var['fee'] < 0)"
+||			"if(var['fee'] < 0 AND !$change_fee)"
 ||				"$fee = $LOW_FEE;"
 ||			"else"
 ||				"$fee = $DEFAULT_FEE;"
