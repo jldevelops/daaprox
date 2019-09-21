@@ -3,6 +3,8 @@ aaprox (https://github.com/jldevelops/aaprox) deployer
 
 Change constants with `default_fee`,`fee_thresold`,`low_fee`
 
-https://testnetexplorer.obyte.org/#me0tBYfG3PtH/A/RxdCgcK/r1HdA/FkZnRaRNhXrpE8=
+Define an attestor address with `attestor` param so only attested addresses will be able to transact
 
-26LZ3HJJYFOZHKYYFBDOCHY4VAJMZVN4
+https://testnetexplorer.obyte.org/#GLHbURx880nYg9tb2HqyDr+2YLjqMlurR44KOLVXrL0=
+
+WIZKCSZP7JOO7WWVIDLAWLS3B6FAR4RQ
