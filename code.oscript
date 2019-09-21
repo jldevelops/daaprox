@@ -43,8 +43,7 @@
 ||		"$DEFAULT_FEE = "||$def_fee||";"
 ||		"$FEE_THRESHOLD = "||$fee_thr||";"
 ||		"$LOW_FEE = "||$low_fee||";"
-||		($attestor?("$ATTESTOR_ADDR = '"||$attestor||"';"
-||		"if(!attestation[[attestors=$ATTESTOR_ADDR, address=trigger.address]]"||($field?("['"||$field||"']"):"")||") bounce('Not allowed to use, please attest your address with '||$ATTESTOR_ADDR);"):"")
+||		($attestor?("$ATTESTOR_ADDR = '"||$attestor||"';if(!attestation[[attestors=$ATTESTOR_ADDR, address=trigger.address,ifnone=false]]"||($field?("['"||$field||"']"):"")||") bounce('Not allowed to use, please attest your address with '||$ATTESTOR_ADDR);"):"")
 ||		"if(trigger.data.to AND !is_valid_address(trigger.data.to)) bounce('To param invalid');"
 ||		"if(trigger.data.from AND !is_valid_address(trigger.data.from)) bounce('From param invalid');"
 ||		"if(trigger.data.spender AND !is_valid_address(trigger.data.spender)) bounce('Spender param invalid');"
@@ -258,7 +257,6 @@
 		]
 	}
 }
-
 ]
 						}
 					}
