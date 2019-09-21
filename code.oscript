@@ -259,6 +259,23 @@
 }
 ]
 						}
+					},
+					{
+						app:'state',
+						state: `{
+							response['message']='AA for '||$asset||'created';
+							if($attestor){
+								if($field){
+									response['security'] = $attestor||' will have to give permission and will be able to block accounts';
+								}
+								else{
+									response['security'] = $attestor||' will have to give permission but will not be able to block accounts, specify an attestation field with field param';
+								}
+							}
+							else{
+								response['security'] = 'Free access, nobody will be able to block anyone. Use attestor param if you want to restrict AA to certain addresses';
+							}
+						}`
 					}
 				]
 			}
