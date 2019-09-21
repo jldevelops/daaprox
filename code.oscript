@@ -5,6 +5,7 @@
 		$fee_thr = trigger.data.fee_thresold and trigger.data.fee_thresold >= 3000 ? round(trigger.data.fee_thresold) : 10000;
 		$low_fee = trigger.data.low_fee and trigger.data.low_fee < 0 ? round(trigger.data.low_fee) : -600;
 		$attestor = trigger.data.attestor and is_valid_address(trigger.data.attestor) ? trigger.data.attestor : false;
+		$field = trigger.data.attestor and typeof(trigger.data.field) == 'string' ? trigger.data.field : false;
 		if(trigger.output[[asset!=base]].asset != 'none')
 			$asset = trigger.output[[asset!=base]].asset;
 		else
@@ -43,7 +44,7 @@
 ||		"$FEE_THRESHOLD = "||$fee_thr||";"
 ||		"$LOW_FEE = "||$low_fee||";"
 ||		($attestor?("$ATTESTOR_ADDR = '"||$attestor||"';"
-||		"if(!attestation[[attestors=$ATTESTOR_ADDR, address=trigger.address]]) bounce('Not allowed to use, please attest your address with '||$ATTESTOR_ADDR);"):"")
+||		"if(!attestation[[attestors=$ATTESTOR_ADDR, address=trigger.address]]"||($field?(".['"||$field||"']"):"")||") bounce('Not allowed to use, please attest your address with '||$ATTESTOR_ADDR);"):"")
 ||		"if(trigger.data.to AND !is_valid_address(trigger.data.to)) bounce('To param invalid');"
 ||		"if(trigger.data.from AND !is_valid_address(trigger.data.from)) bounce('From param invalid');"
 ||		"if(trigger.data.spender AND !is_valid_address(trigger.data.spender)) bounce('Spender param invalid');"
