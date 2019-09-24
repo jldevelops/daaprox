@@ -1,14 +1,10 @@
 {
 	init: `{
 		$BOUNCER = 'RNGBJ65PSKCOKHUAQMDGIBWSD5T3XSQX';
-		if(trigger.output[[asset=base]] < 10000) bounce('Not enough funds for fees');
 		$attestor = trigger.data.attestor and is_valid_address(trigger.data.attestor) ? trigger.data.attestor : false;
 		$field = trigger.data.attestor and typeof(trigger.data.field) == 'string' ? trigger.data.field : false;
 		if(trigger.output[[asset!=base]].asset != 'none')
 			$asset = trigger.output[[asset!=base]].asset;
-		else
-			bounce('You must send an asset');
-		if($asset == 'ambiguous') bounce('Only 1 asset per tx');
 	}`,
 	messages: {
 		cases: [
@@ -25,9 +21,15 @@
 							outputs: [
 								{address: "{var[trigger.data.asset]}"}
 							]
-						
+						},
 					},
+					{
+						app: 'state',
+						state:  "{
+							response['address'] = var[trigger.data.asset];
+						}"
 					}
+
 				]
 			},
 			{
@@ -54,7 +56,7 @@
 						payload: {
 							asset: 'base',
 							outputs: [
-								{address: "{$BOUNCER}"}
+								{address: "{$BOUNCER}",amount:`{trigger.output[[asset=base]]-8000}`}
 							]
 						}
 					},
@@ -295,7 +297,10 @@
 					{
 						app:'state',
 						state: `{
+							if(!$asset)	bounce('You must send an asset');
+							if($asset == 'ambiguous') bounce('Only 1 asset per tx');
 							response['message']='AA for '||$asset||'created';
+							response['address'] = unit[response_unit].messages[[.app='definition']].payload.address;
 							if($attestor){
 								if($field){
 									response['security'] = $attestor||' will have to give permission and will be able to block accounts';
@@ -305,6 +310,7 @@
 								}
 							}
 							else{
+								if(var[$asset]) bounce('Proxy AA already registered: '||var[$asset]);
 								var[$asset] = unit[response_unit].messages[[.app='definition']].payload.address;
 								response['security'] = 'Free access, nobody will be able to block anyone. Use here attestor param to restrict AA to certain addresses';
 							}
