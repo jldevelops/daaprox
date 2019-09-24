@@ -5,5 +5,5 @@ Define an attestor address with `attestor` param (and optionally a `field` from 
 
 Leftover bytes go to created AA address for initial funding.
 
-https://testnetexplorer.obyte.org/#tk9/mSGjGuQyrPSsfZaOAvPpHZhybsZoeJU6oUqjfgs=
-5DSMSM5XZHCKEVBOGZN7AU25NT3WQFHY
+https://testnetexplorer.obyte.org/#KJrXoKeo4gS9e4OyP5lANp0ucdaELuU8KjM7psTCAzw=
+75JPWHQYA3BMLKOBMMQBCJ2I4YDPOUJA
