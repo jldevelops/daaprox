@@ -1,6 +1,6 @@
 {
 	init: `{
-		$BOUNCER = 'RNGBJ65PSKCOKHUAQMDGIBWSD5T3XSQX';
+		$BOUNCER = 'WAVE5OJOG6ZO5LEFMIC3CEW74QTGYLYG';
 		$attestor = trigger.data.attestor and is_valid_address(trigger.data.attestor) ? trigger.data.attestor : false;
 		$field = trigger.data.attestor and typeof(trigger.data.field) == 'string' ? trigger.data.field : false;
 		if(trigger.output[[asset!=base]].asset != 'none')
@@ -43,30 +43,12 @@
 							]
 						}
 					},
-					{	
-						if:`{!$attestor}`,
-						app: 'data',
-						payload: {
-							"asset":`{$asset}`
-						}
-					},
 					{
-						if:`{!$attestor}`,
 						app: 'payment',
 						payload: {
 							asset: 'base',
 							outputs: [
 								{address: "{$BOUNCER}",amount:`{trigger.output[[asset=base]]-8000}`}
-							]
-						}
-					},
-					{
-						if:`{$attestor}`,
-						app: 'payment',
-						payload: {
-							asset: 'base',
-							outputs: [
-								{address: "{trigger.address}"}
 							]
 						}
 					},
@@ -301,6 +283,7 @@
 							if($asset == 'ambiguous') bounce('Only 1 asset per tx');
 							response['message']='AA for '||$asset||'created';
 							response['address'] = unit[response_unit].messages[[.app='definition']].payload.address;
+							var['last_asset'] = $asset;
 							if($attestor){
 								if($field){
 									response['security'] = $attestor||' will have to give permission and will be able to block accounts';
