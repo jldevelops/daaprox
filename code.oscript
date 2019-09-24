@@ -1,6 +1,6 @@
 {
 	init: `{
-		$BOUNCER = 'WAVE5OJOG6ZO5LEFMIC3CEW74QTGYLYG';
+		$BOUNCER = 'V23L3YLZVOLQ473QVRGODFRIDSBDOSUJ';
 		$attestor = trigger.data.attestor and is_valid_address(trigger.data.attestor) ? trigger.data.attestor : false;
 		$field = trigger.data.attestor and typeof(trigger.data.field) == 'string' ? trigger.data.field : false;
 		if(trigger.output[[asset!=base]].asset != 'none')
@@ -9,25 +9,22 @@
 	messages: {
 		cases: [
 			{
-				if: `{trigger.data.asset}`,
-				init: `{
-					if(!var[trigger.data.asset]) bounce('Default proxy AA for '||trigger.data.asset||' not found, please deploy first');
-				}`,
+				if: `{var['last_address']}`,
 				messages: [
 					{
 						app: 'payment',
 						payload: {
 							asset: 'base',
 							outputs: [
-								{address: "{var[trigger.data.asset]}"}
+								{address: "{var[var['last_address']]}"}
 							]
-						},
+						}
 					},
 					{
-						app: 'state',
-						state:  "{
-							response['address'] = var[trigger.data.asset];
-						}"
+						app:'state',
+						state: `{
+							var['last_address'] = false;
+						}`
 					}
 
 				]
@@ -282,8 +279,9 @@
 							if(!$asset)	bounce('You must send an asset');
 							if($asset == 'ambiguous') bounce('Only 1 asset per tx');
 							response['message']='AA for '||$asset||'created';
-							response['address'] = unit[response_unit].messages[[.app='definition']].payload.address;
-							var['last_asset'] = $asset;
+							$definition_address = unit[response_unit].messages[[.app='definition']].payload.address;
+							response['address'] = $definition_address;
+							var['last_address'] = $definition_address;
 							if($attestor){
 								if($field){
 									response['security'] = $attestor||' will have to give permission and will be able to block accounts';
