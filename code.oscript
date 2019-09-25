@@ -9,21 +9,21 @@
 	messages: {
 		cases: [
 			{
-				if: `{var['last_address']}`,
+				if: `{var['l']}`,
 				messages: [
 					{
 						app: 'payment',
 						payload: {
 							asset: 'base',
 							outputs: [
-								{address: "{var['last_address']}"}
+								{address: "{var['l']}"}
 							]
 						}
 					},
 					{
 						app:'state',
 						state: `{
-							var['last_address'] = false;
+							var['l'] = false;
 						}`
 					}
 
@@ -199,7 +199,7 @@
 							response['message']='AA for '||$asset||'created';
 							$definition_address = unit[response_unit].messages[[.app='definition']].payload.address;
 							response['address'] = $definition_address;
-							var['last_address'] = $definition_address;
+							var['l'] = $definition_address;
 							if($attestor){
 								if($field){
 									response['security'] = $attestor||' will have to give permission and will be able to block accounts';
@@ -210,7 +210,7 @@
 							}
 							else{
 								if(var[$asset]) bounce('Proxy AA already registered: '||var[$asset]);
-								var[$asset] = unit[response_unit].messages[[.app='definition']].payload.address;
+								var[$asset] = $definition_address;
 								response['security'] = 'Free access, nobody will be able to block anyone. Use here attestor param to restrict AA to certain addresses';
 							}
 						}`
