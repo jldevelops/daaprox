@@ -16,7 +16,7 @@
 						payload: {
 							asset: 'base',
 							outputs: [
-								{address: "{var[var['last_address']]}"}
+								{address: "{var['last_address']}"}
 							]
 						}
 					},
