@@ -60,7 +60,7 @@
 ||($field?("['"||$field||"']"):"")||") bounce('Not allowed to use, please attest your address with '||$ATTESTOR_ADDR);if(!trigger.data.approve AND $value AND (typeof($value) != 'number' OR $value <= 0)) bounce('Value param invalid');}"
 	}`,
 	messages: {
-		cases: [
+		`{'cases'}`: [
 			{
 				`{'if'}`: `{
 					"{trigger.data.approve AND $base == $BYTE_INP}"
